@@ -513,13 +513,54 @@ class DataNode(_Entity, _Labeled):
         self.edits = self._edits
 
     def lock_edit(self, editor_id: Optional[str] = None):
-        """Lock the data node modification.
+        """Lock the data node modification to prevent concurrent modifications of the data node.
 
-        Note:
+        If locked by an editor, the data node cannot be modified by another editor until
+        the lock is released or after 30 minutes (default timeout) from the last modification.
+        If the data node is already locked by another editor, an exception is raised.
+
+        If no editor is provided, the data node is locked for everyone until it is unlocked
+        with no expiration date. This is not recommended as it can lead to a deadlock.
+
+        It sets the editor identifier `editor_id`, the editor expiration date `editor_expiration_date`,
+        and the edit in progress flag `edit_in_progress`.
+
+        ??? example "Usage"
+
+            ``` python
+            # Locks the data node modification as a specific editor
+            data_node.lock_edit("editor_id")
+            ```
+
+            To check if the data node is locked, use the property `(DataNode.)edit_in_progress^`.
+            ``` python
+            # Returns True if the data node is locked for modification.
+            data_node.edit_in_progress
+            ```
+
+            To get the editor identifier, use the property `(DataNode.)editor_id^`.
+            ``` python
+            # Returns the editor identifier
+            data_node.editor_id
+            ```
+
+            To get the editor expiration date, use the property `(DataNode.)editor_expiration_date^`.
+            ``` python
+            # Returns the editor expiration date
+            data_node.editor_expiration_date
+            ```
+
             The data node can be unlocked with the method `(DataNode.)unlock_edit()^`.
+            ``` python
+            # Unlocks the data node modification as a specific editor
+            data_node.unlock_edit("editor_id")
+            ```
 
         Arguments:
             editor_id (Optional[str]): The editor's identifier.
+
+        Raises:
+            DataNodeIsBeingEdited: If the data node is already locked by another editor.
         """
         if editor_id:
             if (
