@@ -292,7 +292,7 @@ def default_cycle():
 def __create_job():
     task_manager = _TaskManager
     task = __default_task()
-    task_manager._repository._save(task)
+    task_manager._create(task)
     submit_id = f"SUBMISSION_{str(uuid.uuid4())}"
     return Job(id=JobId(f"JOB_{uuid.uuid4()}"), task=task, submit_id=submit_id, submit_entity_id=task.id)
 
