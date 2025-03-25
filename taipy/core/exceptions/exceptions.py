@@ -36,7 +36,7 @@ class NonExistingEntity(Exception):
 
 
 class CycleAlreadyExists(Exception):
-    """Raised if it is trying to create a Cycle that has already exists."""
+    """Raised if a cycle creation is requested for a cycle that already exists."""
 
 
 class NonExistingCycle(Exception):
