@@ -41,18 +41,25 @@ class _Reloader:
 
 ## Technical Details
 - **Branch:** fix/reloader-reentrant
-- **Commit Hash:** 26b1dc2ef
-- **Files Modified:** taipy/core/_entity/_reload.py
+- **Commit Hash:** f98d50db8
+- **Files Modified:** 
+  - taipy/core/_entity/_reload.py
+  - tests/core/test_reload.py
 
 ## Pull Request Information
-- **Title:** fix: make _Reloader context manager re-entrant
-- **Status:** Created/In Review/Merged (update this based on current status)
+- **Title:** fix: make _Reloader context manager re-entrant and add tests
+- **Status:** In Review
 
 ## Testing
 The changes ensure that:
 1. Nested `with` statements work correctly
 2. Reloading remains disabled for all code within any `_Reloader` context
 3. Reloading is only re-enabled when all contexts are exited
+
+Unit tests have been added in `tests/core/test_reload.py` to verify:
+- Basic re-entrant behavior
+- Multiple levels of nesting
+- Edge cases with context management
 
 ## Notes
 - This fix maintains backward compatibility
